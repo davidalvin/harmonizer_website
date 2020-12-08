@@ -1,10 +1,13 @@
-#Backup
+# Files to remove temporarily
+requirements.txt
+
+# Backup
 *.zip
 
 # Midi
 *.mid
 
-# models
+# Models
 *.h5
 
 # Byte-compiled / optimized / DLL files
