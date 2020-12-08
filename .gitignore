@@ -1,0 +1,23 @@
+#Backup
+*.zip
+
+# Midi
+*.mid
+
+# models
+*.h5
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+env/
+.yml
