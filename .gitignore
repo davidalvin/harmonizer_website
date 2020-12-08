@@ -23,4 +23,4 @@ instance/
 # Environments
 .env
 env/
-.yml
+*.yml
