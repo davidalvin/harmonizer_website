@@ -3,7 +3,7 @@ from os import path
 class Config(object):
     DEBUG = False
     SECRET_KEY = 'b45ad7e975774f7f988c6aacb177d22'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
 
     # Upload File Quality Checks
     ALLOWED_UPLOAD_FILE_EXTENSIONS = ['MID']

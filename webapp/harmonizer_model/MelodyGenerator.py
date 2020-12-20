@@ -4,7 +4,6 @@ import json
 import numpy as np
 import music21 as m21
 from webapp.harmonizer_model.GlobalConstants import *
-from webapp.harmonizer_model.HelperFunctions import *
 
 def save_melody(melody="",stream="", step_duration=0.25):
     """Save a part as a music 21 stream.
@@ -16,7 +15,6 @@ def save_melody(melody="",stream="", step_duration=0.25):
     """
     # create a music21 stream
     # This defaults to a 4/4 bars, C major
-    # Can make this more elaborate in future versions
 
     # parse all the symbols in the melody and create note / rest objects
     start_symbol = None
@@ -67,7 +65,6 @@ def save_score(soprano="",alto="", tenor="", bass="", step_duration=0.25, format
 
     # Create a music21 stream
     # This defaults to a 4/4 bars, C major
-    # Can make this more elaborate in future versions
     stream = m21.stream.Stream()
 
     for part_name in parts_dict.keys():
@@ -121,7 +118,6 @@ class MelodyGenerator:
     """Defines a Melody Generator class for a model built of a B, A, S and T sub-model"""
     def __init__(self, model_path = MODEL_PATH, mapping_path = SYMBOL_MAPPING_PATH, key_mapping_path = KEY_MAPPING_PATH):
         self.model_path = model_path
-        print(os.getcwd())
         self.model = tf.keras.models.load_model(model_path)
 
         # The model is built of sub-models named B_model, A_model and T_model
@@ -168,139 +164,10 @@ class MelodyGenerator:
             for i,note in enumerate(top_notes):
                 print("{}:\t{}".format(note, probabilities[top_idx[i]]*100))
 
-    def harmonize_melody(self, voice_S, key='C major', temperature=1, verbose=0):
-        print("Generating the melody")
-        """Generate a melody from a seed
-        :template: a list of midi symbols for the template melody
-        :num_steps: Number of steps to generate the melody for
-        :temperature: Indicates how random the melody should be from 0 -> infinity, with 0 being more deterministic
-            and infinity being more random
-        :verbose: If verbose = 1, then details of the generation will be printed to the terminal. Used for debugging.
-        """
-        num_steps = len(voice_S)
-        num_classes = len(self.mappings)
-        num_keys = len(self.key_mappings)
-
-        # Initialize the appropriate start and end symbols
-        voice_B = ["/"] * TRAIN_SEQUENCE_LENGTH
-        voice_A = ["/"] * TRAIN_SEQUENCE_LENGTH
-        voice_T = ["/"] * TRAIN_SEQUENCE_LENGTH
-        voice_S = ["/"] * TRAIN_SEQUENCE_LENGTH + voice_S + ["/"] * TRAIN_SEQUENCE_LENGTH
-
-        # Map the melody to intgeter
-        voice_B_int = [self.mappings[symbol] for symbol in voice_B]
-        voice_A_int = [self.mappings[symbol] for symbol in voice_A]
-        voice_T_int = [self.mappings[symbol] for symbol in voice_T]
-        voice_S_int = [self.mappings[symbol] for symbol in voice_S]
-
-        # Iterate through each note in the template melody
-        for i in range(num_steps):
-
-            # Print an update on the progress
-            if i%16==0:
-                print("Percent Complete: {}%".format(int(i/num_steps*100)))
-
-            # Break up the template melody into past, current and future
-            voice_S_past = voice_S_int[i:i+TRAIN_SEQUENCE_LENGTH]
-            voice_S_current = voice_S_int[i+TRAIN_SEQUENCE_LENGTH]
-            voice_S_future = voice_S_int[i+1+TRAIN_SEQUENCE_LENGTH:i+1+2*TRAIN_SEQUENCE_LENGTH] #### DOES THIS NEED TO BE FLIPPED????
-
-            # Get the past target melody
-            voice_B_past = voice_B_int[i:i+TRAIN_SEQUENCE_LENGTH]
-            voice_A_past = voice_A_int[i:i+TRAIN_SEQUENCE_LENGTH]
-            voice_T_past = voice_T_int[i:i+TRAIN_SEQUENCE_LENGTH]
-
-            # Print to the terminal if verbose is on
-            if verbose==1:
-                print(i, ":----------")
-                print("voice_B_past, ", voice_B_past, [self.reverse_mappings[symbol] for symbol in voice_B_past])
-                print("voice_A_past, ",voice_A_past, [self.reverse_mappings[symbol] for symbol in voice_A_past])
-                print("voice_T_past, ",voice_T_past, [self.reverse_mappings[symbol] for symbol in voice_T_past])
-                print("voice_S_past, ",voice_S_past, [self.reverse_mappings[symbol] for symbol in voice_S_past])
-                print("voice_S_current, ",voice_S_current, self.reverse_mappings[voice_S_current])
-                print("voice_S_future, ",voice_S_future, [self.reverse_mappings[symbol] for symbol in voice_S_future])
-
-            # One hot encode each of the above
-            voice_S_past = tf.keras.utils.to_categorical(voice_S_past, num_classes)
-            voice_S_current = tf.keras.utils.to_categorical(voice_S_current, num_classes)
-            voice_S_future = tf.keras.utils.to_categorical(voice_S_future, num_classes)
-            voice_B_past = tf.keras.utils.to_categorical(voice_B_past, num_classes)
-            voice_A_past = tf.keras.utils.to_categorical(voice_A_past, num_classes)
-            voice_T_past = tf.keras.utils.to_categorical(voice_T_past, num_classes)
-            voice_S_key = tf.keras.utils.to_categorical(self.key_mappings[key], num_keys)
-
-            if verbose==1:
-                print("---Model inputs---")
-                print("voice_B_past:", voice_B_past)
-                print("voice_A_past:", voice_A_past)
-                print("voice_T_past:", voice_T_past)
-                print("voice_S_past:", voice_S_past)
-                print("voice_S_current:", voice_S_current)
-                print("voice_S_future:", voice_S_future)
-                print("voice_S_key:", voice_S_key)
-
-            # Make a prediction
-            model_inputs = ([voice_B_past],
-                            [voice_A_past],
-                            [voice_T_past],
-                            [voice_S_past],
-                            [voice_S_current],
-                            [voice_S_future],
-                            [voice_S_key],
-                            )
-
-            predictions = self.model.predict(model_inputs)
-
-            B_pred = predictions[0][0]
-            A_pred = predictions[1][0]
-            T_pred = predictions[2][0]
-            if verbose==1:
-                print("---Predictions---")
-                print("B:", B_pred)
-                print("A:", A_pred)
-                print("T:", T_pred)
-
-            # Sample the prediction with temperature
-            output_B_int = self.sample_with_temperature(B_pred, temperature)
-            output_A_int = self.sample_with_temperature(A_pred, temperature)
-            output_T_int = self.sample_with_temperature(T_pred, temperature)
-
-            # Update the template melody by appending it to the end
-            voice_B_int.append(output_B_int)
-            voice_A_int.append(output_A_int)
-            voice_T_int.append(output_T_int)
-
-            # Map it to a midi symbol
-            output_B_symbol = self.reverse_mappings[output_B_int]
-            output_A_symbol = self.reverse_mappings[output_A_int]
-            output_T_symbol = self.reverse_mappings[output_T_int]
-
-            # Print to the terminal if verbose is on
-            if verbose==1:
-                print("---Selected---")
-                print("B:", output_B_symbol)
-                print("A:", output_A_symbol)
-                print("T:", output_T_symbol)
-
-            # Check whether we are at the end of the melody
-            if output_B_symbol == "/":
-                print("Reached the end of the song at {} steps.".format(i))
-                break
-
-            # Update the target melody with the prediction
-            voice_B.append(output_B_symbol)
-            voice_A.append(output_A_symbol)
-            voice_T.append(output_T_symbol)
-
-        # return the target melody (excluding the padding at the beginning)
-        return voice_B[TRAIN_SEQUENCE_LENGTH:], voice_A[TRAIN_SEQUENCE_LENGTH:], voice_T[TRAIN_SEQUENCE_LENGTH:]
-
     def harmonize_melody_sequentially(self, voice_S, key='C major', temperature=1, verbose=0):
 
         """Generate a melody from a seed sequentially.
         First the B note is predicted, then A, then T, as opposed to all in parallel.
-        :template: a list of midi symbols for the template melody
-        :num_steps: Number of steps to generate the melody for
         :temperature: Indicates how random the melody should be from 0 -> infinity, with 0 being more deterministic
             and infinity being more random
         :verbose: If verbose = 1, then details of the generation will be printed to the terminal. Used for debugging.
@@ -388,10 +255,9 @@ class MelodyGenerator:
                             [voice_S_future],
                             [voice_S_key],
                             )
-
-            predictions = self.model_B.predict(model_B_inputs)
+            predictions = self.model_B.predict(model_B_inputs, steps=1)
             B_pred = predictions[0]
-
+            
             # Sample the prediction B with temperature
             output_B_int = self.sample_with_temperature(B_pred, temperature)
             #output_B_int = np.argmax(B_pred)
@@ -419,7 +285,7 @@ class MelodyGenerator:
                             [output_B_int_oh]
                             )
 
-            predictions = self.model_A.predict(model_A_inputs)
+            predictions = self.model_A.predict(model_A_inputs, steps=1)
             A_pred = predictions[0]
 
             # Sample the prediction A with temperature
@@ -451,7 +317,7 @@ class MelodyGenerator:
                             [output_A_int_oh]
                             )
 
-            predictions = self.model_T.predict(model_T_inputs)
+            predictions = self.model_T.predict(model_T_inputs, steps=1)
             T_pred = predictions[0]
 
             if verbose==1:

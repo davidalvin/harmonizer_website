@@ -5,19 +5,11 @@
 import os
 
 cwd = os.getcwd()
-#------SONGS--------
-# ENCODED_SONG_PATH = ".\\encoded_songs" # Path where encoded songs are saved
-# COMBINED_SONGS_PATH = ".\\encoded_songs_singlefile" # Path where encoded songs are saved
 
 #------TRAINING-----
 TRAINING_PATH = os.path.join(cwd,"midi_training","original")
 TRAINING_ENCODED_PATH = os.path.join(cwd,"encoded_train_midis")
 TRAINING_COMBINED_SONGS_PATH = os.path.join(cwd,"encoded_train_singlefile")
-
-# MAPPING_PATH = ".\\mapping"
-# INT_SONGS_PATH = ".\\encoded_songs_singlefile"
-# TRAIN_PATH = ".\\train_sequences"
-# SAVE_MODEL_PATH = ".\\models"
 
 model_name = "LSTMx128x128-Densex512x128-Densex512x128-SYMBOL-SCALE-64-Dropout-0.2-C-Maj-25E-20201016.h5"
 MODEL_PATH = os.path.join("webapp", "harmonizer_model", "models", model_name)
@@ -27,8 +19,6 @@ KEY_MAPPING_PATH = os.path.join("webapp", "harmonizer_model", "mapping", "mappin
 TIME_STEPS = 0.125 # Smallest time steps in quarter_length
 TRAIN_SEQUENCE_LENGTH = 64 # Length of the training sequence
 SONG_KEY = "C major"
-
-
 
 #------SMYBOLS------
 EOF_ = "/"
@@ -107,7 +97,7 @@ EOF_SYMBOL = {"symbol": EOF_,  # _
                "octave": EOF_,
                "degree": EOF_,
                "strike": NOTE_OFF_,
-               "key": EOF_} # THought it would be worth keeping as 0 as that already represents note off
+               "key": EOF_} # Kept as 0 as that already represents note off
 
 # Define a dictionary of voices
 VOICES_TO_INT = {"S": 0,
