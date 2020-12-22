@@ -1,12 +1,13 @@
 
 {% extends "layout.html" %}
 {% block main %}
-<!-- Main jumbotron for a primary marketing message or call to action -->
+<!-- /container -->
 <div class="container">
-  <!-- Example row of columns -->
-  <div class="row">
+
+  <!-- Uploader -->
+  <div class="row" id="row-upload">
     <div class="col-md-12">
-      <h2>Upload a file</h2>
+      <h2>1. Upload a file</h2>
       <p>Upload a midi file. It must be a monophonic melody (sorry, no chords).</p>
 
       <div class="input-group mb-3">
@@ -17,14 +18,30 @@
                   <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
                 </div>
                 <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04">Submit</button>
+                  <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04" onclick="displayLoader()">Submit</button>
                 </div>
             </div>
           </form>
       </div>
     </div>
   </div>
-</div> <!-- /container -->
+
+  <!-- Loading Icon -->
+  <div class="row" id="row-loading" style="display:none">
+    <div class="col-md-12">
+      <h2>2. Harmonizing...</h2>
+      <p>Please be patient as this may take up to 5 minutes. Do not leave or reload the page.</p>
+      <div class="text-center">
+        <button class="btn btn-primary" type="button" disabled>
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          Thinking...
+        </button>
+      </div>
+    </div>
+  </div>
+
+<!-- End of Container -->
+</div> 
 {% endblock %}
 
 {% block script %}
@@ -33,5 +50,11 @@
         var fileName = e.target.files[0].name;
         $('.custom-file-label').html(fileName);
     });
+
+    // Hide the uploading elements and show the loading icon
+    function displayLoader() {
+      document.getElementById("row-upload").style.display = "none";
+      document.getElementById("row-loading").style.display = "block";
+    }
 </script>
 {% endblock %}
