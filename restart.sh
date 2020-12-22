@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # CLEAR INPUT AND OUTPUT DIRECTORIES
+clear
 rm webapp/input/*
 rm webapp/output/*
 
