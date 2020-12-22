@@ -53,3 +53,9 @@ def download():
     return send_file(path_to_file, as_attachment=True)
   else:
     return render_template('index.html')
+
+# Site overloaded
+@app.errorhandler(429)
+def site_overloaded(e):
+    # Set the 429 status explicitly
+    return render_template('429.html'), 429
