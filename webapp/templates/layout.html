@@ -6,62 +6,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <title>Prelude49</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/jumbotron/">
-
-    <!-- Bootstrap core CSS -->
+     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="static/bootstrap.min.css">
     <meta name="theme-color" content="#563d7c">
 
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
+        @import url('https://fonts.googleapis.com/css2?family=Alegreya&family=Anonymous+Pro&display=swap');
+        
+        /* Main Body */
+        body {
+            font-family: 'Alegreya', serif;
         }
-      }
+        
+        a {
+            color:#000;
+        }
+
+        a:hover {
+            color: #f00;
+        }
+         /* Page Title */
+        .page-title {
+            font-family: 'Anonymous Pro', monospace;
+            font-size: 500rem;
+        }
+
+        .page-title a:hover {
+            color:red !important;
+        }
+
+        /* Nav Bar */
+        ul.navbar-nav a:hover { 
+            color: #f00 
+            !important; 
+        }
+
+        /* List Groups */
+        .list-group-item { 
+            color: #000
+            !important; 
+        }
+
     </style>
     <!-- Custom styles for this template -->
-
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="/">JDB</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Help</a>
-            </li>
-          </ul>
-        </div>
+    <div class="container">
+      <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top">
+          <a class="navbar-brand" href="#">Prelude 49</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+              <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#">Help</a>
+              </li>
+              </ul>
+          </div>
       </nav>
-
-      <div class="jumbotron">
-        <div class="container">
-          <h1 class="display-3">Prelude49</h1>
-          <p class="lead">Roll over Beethoven. Tell Tchaikovsky the news.</p>
-        </div>
+  </div>
+  <div class="container">
+      <div class="col" style="height:100px;"></div>
+      <div class="row" >
+          <div class="col page-title">
+              <h1 class="text-center">P r e l u d e &nbsp<a>4 9</a></h1>
+              <h4 class="text-center text-muted">Tell Tchaikovsky the news.</h4>
+          </div>
       </div>
+      <div class="row m-1">
+          <img src="{{url_for('static', filename='img/staff.png')}}"" class="img-fluid" alt="Responsive image">
+      </div>
+      <div class="col" style="height:50px;"></div>
+
       <main role="main">
         {% block main %}
         {% endblock %}
       </main>
+
       <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
@@ -87,5 +115,9 @@
 
   {% block script %}
   {% endblock %}
-
+  <script>
+    var loc = window.location.pathname;
+    var dir = loc.substring(0, loc.lastIndexOf('/'));
+    console.log(loc);
+  </script>
 </html>

@@ -3,22 +3,40 @@
 {% block main %}
 <!-- /container -->
 <div class="container">
-
+    <div class="row">
+      <div class="col">
+        <h2>How this works</h2>
+            <ul class="list-group list">
+              <li class="list-group-item list-group-item-action border-0">
+                  <h5>1. Upload your melody</h5>
+                  <p>Upload a monophonic melody (no chords) in C major as a midi file.
+                      There are many free midi editors available, like <a href="https://musescore.org/en">MuseScore</a>.
+                  </p>
+              </li>
+              <li class="list-group-item list-group-item-action border-0">
+                  <h5>2. Harmonize</h5>
+                  <p>Wait a few minutes while your song is automatically harmonized.</p>
+              <li class="list-group-item list-group-item-action border-0">
+                  <h5>3. Listen to the results</h5>
+                  <p>Download your song to litsen to it in four-part harmony.</p>
+              </li>
+            </ul>
+      </div>
+  </div>
   <!-- Uploader -->
   <div class="row" id="row-upload">
     <div class="col-md-12">
-      <h2>1. Upload a file</h2>
-      <p>Upload a midi file. It must be a monophonic melody (sorry, no chords).</p>
-
+      <h2>Get Started</h2>
+      <p>Upload your melody as a midi file in C major. It must be a monophonic (no chords).</p>
       <div class="input-group mb-3">
           <form action = "/processing" method = "POST" enctype = "multipart/form-data">
              <div class="input-group">
                 <div class="custom-file">
                   <input type="file" name = "file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
-                  <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                  <label class="custom-file-label" for="inputGroupFile04">Choose a .midi file</label>
                 </div>
                 <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04" onclick="displayLoader()">Submit</button>
+                  <button class="btn btn-dark" type="submit" id="inputGroupFileAddon04" onclick="displayLoader()">Upload</button>
                 </div>
             </div>
           </form>
@@ -29,10 +47,10 @@
   <!-- Loading Icon -->
   <div class="row" id="row-loading" style="display:none">
     <div class="col-md-12">
-      <h2>2. Harmonizing...</h2>
+      <h2>Harmonizing...</h2>
       <p>Please be patient as this may take up to 5 minutes. Do not leave or reload the page.</p>
       <div class="text-center">
-        <button class="btn btn-primary" type="button" disabled>
+        <button class="btn btn-dark btn-lg btn-block" type="button" disabled>
           <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
           Thinking...
         </button>
