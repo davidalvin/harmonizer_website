@@ -4,6 +4,7 @@ from webapp.validator import FileValidator
 from os import path, getcwd
 from webapp.harmonizer_model import Generate_SATB_Sequentially
 import secrets
+import subprocess
 
 # Home
 @app.route('/')
@@ -31,11 +32,22 @@ def processing():
  
       flash("Harmonization complete", "success")
       session["DOWNLOAD_READY"] = 1
+      midi_path = path.join(app.config["OUTPUT_PATH"], session.get("SONG_KEY"))
+      wav_path = path.join(app.config["OUTPUT_PATH"], session.get("SONG_KEY")[:-3]+"wav") # Path to output wav
+      sf_path = path.join(app.config["SF_PATH"], 'FluidR3_GM.sf2') # Path to Sound Fount
+
+      # Convert Midi to Wav using fluidsynth, which is installed as a separate dependency
+      process = subprocess.Popen(['fluidsynth', '-F', wav_path, sf_path, midi_path],
+                     stdout=subprocess.PIPE, 
+                     stderr=subprocess.PIPE)
+
+      # TODO: This currently does not display the downloaded file correctly
     else:
       flash(message, "danger")
       return redirect(url_for("home"))
 
-  return render_template('listen.html')
+  # TODO: Should this be in the if statement?
+  return render_template('listen.html', wav_path=wav_path)
 
 # Page that is displayed after the song is generated
 @app.route("/listen")
