@@ -11,6 +11,7 @@ class Config(object):
     # IO Paths
     FILE_UPLOAD_PATH = path.join('webapp', 'input')
     OUTPUT_PATH = path.join("webapp", "output")
+    SF_PATH = path.join("webapp", "sf") # Soundfont path
     # UPLOADED_FILE_NAME = "user-upload.mid"
     # GENERATED_MIDI_FILE_NAME = "generated-song.mid"
 
