@@ -8,6 +8,17 @@
       <p>Your masterwork is complete. Download your song by clicking the link below. </p>
       <a href="{{url_for('download')}}">Download</a>
     </div>
+    <div class="div">
+      <div class="row">
+        <div class="col">
+          <!-- TODO: The file is not properly passed to the webpage at the moment -->
+          <audio controls>
+              <source src="{{wav_path}}" type="audio/wav">
+          Your browser does not support the audio element.
+          </audio>
+        </div>
+      </div>
+    </div>
   </div>
 </div> <!-- /container -->
 {% endblock %}
