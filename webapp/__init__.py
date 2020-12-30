@@ -15,7 +15,7 @@ else:
 limiter = Limiter(
     app,
     key_func= lambda : "1", # 1 means this applies to all users
-    default_limits=["20 per day", "10 per hour", "1 per 2minutes"]
+    #default_limits=["20 per day", "10 per hour", "1 per 2minutes"]
 )
 
 from webapp import routes
