@@ -15,10 +15,11 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Alegreya&family=Anonymous+Pro&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
         
         /* Main Body */
         body {
-            font-family: 'Alegreya', serif;
+          font-family: 'Noto Sans', sans-serif;
         }
         
         a {
@@ -30,7 +31,7 @@
         }
          /* Page Title */
         .page-title {
-            font-family: 'Anonymous Pro', monospace;
+            font-family: 'Alegreya', serif;
             font-size: 500rem;
         }
 
@@ -50,20 +51,22 @@
             !important; 
         }
 
-    </style>
+        .border-2 {
+          border-width:2px !important;
+        }
+      </style>
     <!-- Custom styles for this template -->
   </head>
   <body>
     <div class="container">
       <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top">
-          <a class="navbar-brand" href="#">Prelude 49</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-          </button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
           <div class="collapse navbar-collapse" id="navbarsExampleDefault">
               <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" href="#">Help</a>
@@ -71,8 +74,8 @@
               </ul>
           </div>
       </nav>
-  </div>
-  <div class="container">
+    </div>
+    <div class="container">
       <div class="col" style="height:100px;"></div>
       <div class="row" >
           <div class="col page-title">
@@ -83,28 +86,28 @@
       <div class="row m-1">
           <img src="{{url_for('static', filename='img/staff.png')}}"" class="img-fluid" alt="Responsive image">
       </div>
-      <div class="col" style="height:50px;"></div>
+      <div class="col" style="height:25px;"></div>
 
       <main role="main">
         {% block main %}
         {% endblock %}
       </main>
 
-      <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                <span> {{message}} </span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-      </div>
-      <hr>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              <span> {{message}} </span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+     
+    </div>
+    <hr>
   </body>
   <footer class="container">
     <p>&copy; JDB 2020</p>
