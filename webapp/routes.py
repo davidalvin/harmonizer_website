@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, send_file, flash, session
+from flask import render_template, url_for, flash, redirect, request, send_file, flash, session, send_from_directory
 from webapp import app, limiter
 from webapp.validator import FileValidator
 from os import path, getcwd
@@ -13,6 +13,7 @@ import subprocess
 def home():
     # Generate a random key
     session["SONG_KEY"] = secrets.token_hex(15) + ".mid"
+    print(f"The root path is {app.root_path}")
     
     return render_template('index.html')
 
@@ -33,7 +34,8 @@ def processing():
       flash("Harmonization complete", "success")
       session["DOWNLOAD_READY"] = 1
       midi_path = path.join(app.config["OUTPUT_PATH"], session.get("SONG_KEY"))
-      wav_path = path.join(app.config["OUTPUT_PATH"], session.get("SONG_KEY")[:-3]+"wav") # Path to output wav
+      wav_name = session.get("SONG_KEY")[:-3]+"wav"
+      wav_path = path.join(app.config["OUTPUT_PATH"],  wav_name) # Path to output wav
       sf_path = path.join(app.config["SF_PATH"], 'FluidR3_GM.sf2') # Path to Sound Fount
 
       # Convert Midi to Wav using fluidsynth, which is installed as a separate dependency
@@ -47,7 +49,7 @@ def processing():
       return redirect(url_for("home"))
 
   # TODO: Should this be in the if statement?
-  return render_template('listen.html', wav_path=wav_path)
+  return render_template('listen.html', wav_name=wav_name)
 
 # Page that is displayed after the song is generated
 @app.route("/listen")
@@ -66,8 +68,18 @@ def download():
   else:
     return render_template('index.html')
 
+
+@app.route('/cdn/wav/<path:filename>', methods=["GET"])
+def get_wav(filename):
+  return send_from_directory(path.join(app.root_path, "output"), filename=filename)
+
+@app.route('/cdn/wav/<path:filename>', methods=["GET"])
+def get_wav2(filename):
+  return send_from_directory(path.join(app.root_path, "output"), filename=filename)
+
 # Site overloaded
 @app.errorhandler(429)
 def site_overloaded(e):
     # Set the 429 status explicitly
     return render_template('429.html'), 429
+
