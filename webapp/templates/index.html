@@ -23,7 +23,7 @@
     <!-- Break -->
   <div class="col" style="height:25px;"></div>
 
-  <!-- Uploader -->
+  <!-- File Browser Uploader -->
   <div class="row" id="row-upload">
     <div class="col-md-12">
       <h5><strong>Get Started</strong></h5>
@@ -31,18 +31,40 @@
       <div class="input-group mb-3">
           <form action = "/processing" method = "POST" enctype = "multipart/form-data">
             <div class="input-group">
-                <div class="custom-file">
-                  <input type="file" name = "file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
-                  <label class="custom-file-label" for="inputGroupFile04">Choose a .midi file</label>
-                </div>
-                <div class="input-group-append">
-                  <button class="btn btn-dark" type="submit" id="inputGroupFileAddon04" onclick="displayLoader()">Upload</button>
-                </div>
+              <div class="custom-file">
+                <input type="file" name = "file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                <label class="custom-file-label" for="inputGroupFile04">Upload a .midi file...</label>
+              </div>
+            </div>
+
+            <div class="col-auto">
+              <button class="btn btn-dark" type="submit" id="inputGroupFileAddon04" onclick="displayLoader()">Harmonize</button>
             </div>
           </form>
-      </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <form action = "/test" method = "POST" enctype = "multipart/form-data">
+              <div class="form-group">
+                <label for="preloaded-melody">Or use one of these melodies</label>
+                <select name="default_melody" class="form-control" id="preloaded-melody">
+                  <option value="">Choose a melody...</option>
+                  <option value="twinkle-twinkle.mid">Twinkle Twinkle</option>
+                  <option value="sample-melody-1.mid">Sample Melody</option>
+                  <option value="happy-birthday-1.mid">Happy Birthday</option>
+                </select>
+                <div class="col-auto">
+                  <button class="btn btn-dark" type="submit" id="inputGroupFileAddon04" onclick="displayLoader()">Harmonize</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
     </div>
   </div>
+
   <!-- Loading Icon -->
   <div class="row" id="row-loading" style="display:none">
     <div class="col-md-12">
