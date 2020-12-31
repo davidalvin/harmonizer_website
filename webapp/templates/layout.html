@@ -4,58 +4,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
     <title>Prelude49</title>
      <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="static/bootstrap.min.css">
-    <meta name="theme-color" content="#563d7c">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Alegreya&family=Anonymous+Pro&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
-        
-        /* Main Body */
-        body {
-          font-family: 'Noto Sans', sans-serif;
-        }
-        
-        a {
-            color:#000;
-        }
-
-        a:hover {
-            color: #f00;
-        }
-         /* Page Title */
-        .page-title {
-            font-family: 'Alegreya', serif;
-            font-size: 500rem;
-        }
-
-        .page-title a:hover {
-            color:red !important;
-        }
-
-        /* Nav Bar */
-        ul.navbar-nav a:hover { 
-            color: #f00 
-            !important; 
-        }
-
-        /* List Groups */
-        .list-group-item { 
-            color: #000
-            !important; 
-        }
-
-        .border-2 {
-          border-width:2px !important;
-        }
-      </style>
-    <!-- Custom styles for this template -->
+     <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
   </head>
   <body>
     <div class="container">
@@ -76,16 +30,21 @@
       </nav>
     </div>
     <div class="container">
-      <div class="col" style="height:100px;"></div>
+      <div class="col" style="height:75px;"></div>
       <div class="row" >
           <div class="col page-title">
-              <h1 class="text-center">P r e l u d e &nbsp<a>4 9</a></h1>
-              <h4 class="text-center text-muted">Tell Tchaikovsky the news.</h4>
+              <h1 id="main-title" class="text-center">P r e l u d e &nbsp4 9</h1>
+              <h2 class="text-center text-muted">Tell Tchaikovsky the news.</h4>
           </div>
       </div>
-      <div class="row m-1">
-          <img src="{{url_for('static', filename='img/staff.png')}}"" class="img-fluid" alt="Responsive image">
+      <div class="row">
+        <div class="col md-4"></div>
+        <div class="col md-4">
+          <div id="osmdContainer"></div>
+        </div>
+        <div class="col md-4"></div>
       </div>
+      
       <div class="col" style="height:25px;"></div>
 
       <main role="main">
@@ -122,5 +81,29 @@
     var loc = window.location.pathname;
     var dir = loc.substring(0, loc.lastIndexOf('/'));
     console.log(loc);
+  </script>
+
+  <!--Open Sheet Music Display Core JS -->
+  <script src="{{ url_for('static',filename='js/opensheetmusicdisplay.min.js') }}"></script>
+
+  <!-- Custom JS to render the title score -->
+  <script>
+    var osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmdContainer");
+    osmd.setOptions({
+    backend: "svg",
+    drawTitle: false,
+    drawingParameters: "compacttight", // don't display title, composer etc., smaller margins
+    autoResize: true,
+    drawPartNames: false,
+    drawMeasureNumbers: false,
+    renderSingleHorizontalStaffline: true,
+    });
+    osmd
+    .load("{{ url_for('static', filename='musicxml/title-song.musicxml') }}")
+    .then(
+        function() {
+        osmd.render();
+        }
+    );
   </script>
 </html>
