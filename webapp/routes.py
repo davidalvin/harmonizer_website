@@ -83,3 +83,12 @@ def site_overloaded(e):
     # Set the 429 status explicitly
     return render_template('429.html'), 429
 
+@app.route('/test', methods=["POST"])
+def test():
+  if request.method == "POST" and request.form["default_melody"]:
+    melody_name=request.form["default_melody"]
+    song_name=path.join("default", melody_name)
+    Generate_SATB_Sequentially.generate_harmony_from_melody(song_name=song_key)
+  else:
+    print("no melody uploaded")
+  return render_template('test.html')
