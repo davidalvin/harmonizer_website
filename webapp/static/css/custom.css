@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&display=swap');
+
+
+ /* Page Title */
+.page-title {
+    font-family: 'EB Garamond', serif;
+}
+
+#main-title {
+    font-size:75px !important;
+}
+
+/* Links */
+a {
+    color: #000;
+
+}
+
+/* Nav Bar */
+ul.navbar-nav a{ 
+    color: #000;
+    text-decoration:none !important; 
+}
+
+
+
+a:hover {
+    color: #777;
+}
+
+/* List Groups */
+.list-group-item { 
+    color: #000
+    !important; 
+}
+
+/* Custom Borders */
+.border-2 {
+  border-width:2px !important;
+}
