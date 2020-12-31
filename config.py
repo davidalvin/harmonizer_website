@@ -10,6 +10,7 @@ class Config(object):
 
     # IO Paths
     FILE_UPLOAD_PATH = path.join('webapp', 'input')
+    DEFAULT_FILE_UPLOAD_PATH = path.join(FILE_UPLOAD_PATH, 'default')
     OUTPUT_PATH = path.join("webapp", "output")
     SF_PATH = path.join("webapp", "sf") # Soundfont path
     # UPLOADED_FILE_NAME = "user-upload.mid"
