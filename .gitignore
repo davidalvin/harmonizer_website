@@ -6,6 +6,9 @@
 # Midi
 *.mid
 
+# Wav
+*.wav
+
 # Models
 *.h5
 
@@ -27,3 +30,9 @@ env/
 #Folders
 dist/
 install/
+
+# Sound Fonts
+*.sf2
+
+
+

@@ -1,47 +1,71 @@
 
 {% extends "layout.html" %}
+
 {% block main %}
 <!-- /container -->
-<div class="container">
 
-  <!-- Uploader -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <h5><strong>Upload</strong></h5>
+      <p>Upload a monophonic melody (no chords) in C major as a midi file.
+          There are many free midi editors available, like <a href="https://musescore.org/en">MuseScore</a>.</p>
+    </div>
+    <div class="col-md-4 my-2">
+      <h5><strong>Harmonize</strong></h5>
+      <p>Wait a few minutes while your song is automatically harmonized.</p>
+    </div>
+    <div class="col-md-4 my-2">
+        <h5><strong>Listen</strong></h5>
+        <p>Download your song to listen to it in four-part harmony.</p>
+    </div>
+  </div>
+
+    <!-- Break -->
+  <div class="col" style="height:25px;"></div>
+
+  <!-- File Browser Uploader -->
   <div class="row" id="row-upload">
     <div class="col-md-12">
-      <h2>1. Upload a file</h2>
-      <p>Upload a midi file. It must be a monophonic melody (sorry, no chords).</p>
-
-      <div class="input-group mb-3">
-          <form action = "/processing" method = "POST" enctype = "multipart/form-data">
-             <div class="input-group">
-                <div class="custom-file">
-                  <input type="file" name = "file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
-                  <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
-                </div>
-                <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04" onclick="displayLoader()">Submit</button>
-                </div>
-            </div>
-          </form>
-      </div>
+      <h5><strong>Get Started</strong></h5>
+      <p>Upload your melody as a midi file in C major. It must be monophonic (no chords).</p>
+      <form action = "/processing" method = "POST" enctype = "multipart/form-data">
+        <div class="form-group">
+          <div class="custom-file">
+            <input type="file" name = "file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+            <label class="custom-file-label" for="inputGroupFile04">Upload a .midi file...</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="preloaded-melody">Or use one of these melodies</label>
+          <select name="default-melody" class="form-control" id="preloaded-melody">
+            <option selected="selected" value="">Choose a melody...</option>
+            <option value="twinkle-twinkle.mid">Twinkle Twinkle</option>
+            <option value="happy-birthday.mid">Happy Birthday</option>
+            <option value="bwv-438.mid">BWV 438</option>
+            <option value="sample-melody-1.mid">Sample Melody</option>
+            <option value="dummy.mid">Dummy Midi Song (Testing only)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-dark btn-lg btn-block" type="submit" id="inputGroupFileAddon04" onclick="displayLoader()">Harmonize</button>
+        </div>
+      </form>
     </div>
   </div>
 
   <!-- Loading Icon -->
   <div class="row" id="row-loading" style="display:none">
     <div class="col-md-12">
-      <h2>2. Harmonizing...</h2>
+      <h5><strong>Harmonizing...</strong></h5>
       <p>Please be patient as this may take up to 5 minutes. Do not leave or reload the page.</p>
       <div class="text-center">
-        <button class="btn btn-primary" type="button" disabled>
+        <button class="btn btn-dark btn-lg btn-block" type="button" disabled>
           <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
           Thinking...
         </button>
       </div>
     </div>
   </div>
-
-<!-- End of Container -->
-</div> 
 {% endblock %}
 
 {% block script %}

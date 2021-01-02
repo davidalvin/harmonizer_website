@@ -2,7 +2,7 @@
 
 # CLEAR INPUT AND OUTPUT DIRECTORIES
 clear
-rm webapp/input/*
+rm webapp/input/*.mid
 rm webapp/output/*
 
 # CHANGE THIS BEFORE RUNNING ON PRODUCTION
