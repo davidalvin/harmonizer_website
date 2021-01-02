@@ -38,3 +38,17 @@ a:hover {
 .border-2 {
   border-width:2px !important;
 }
+
+/* Audio Player */
+.audio-player {
+    margin: 10px auto; 
+    display: block;
+    width: 50%;
+}
+
+/* Audio Player */
+.title-score {
+    margin: 10px auto; 
+    width: 50%;
+    display: block;
+}
