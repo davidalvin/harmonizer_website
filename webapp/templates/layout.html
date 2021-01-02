@@ -37,14 +37,12 @@
               <h2 class="text-center text-muted">Tell Tchaikovsky the news.</h4>
           </div>
       </div>
+
       <div class="row">
-        <div class="col md-4"></div>
-        <div class="col md-4">
-          <div id="osmdContainer"></div>
+        <div class="col md-12">
+            <div id="osmdContainer" class="title-score"></div>
         </div>
-        <div class="col md-4"></div>
       </div>
-      
       <div class="col" style="height:25px;"></div>
 
       <main role="main">
@@ -89,6 +87,7 @@
   <!-- Custom JS to render the title score -->
   <script>
     var osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmdContainer");
+    
     osmd.setOptions({
     backend: "svg",
     drawTitle: false,
@@ -96,12 +95,13 @@
     autoResize: true,
     drawPartNames: false,
     drawMeasureNumbers: false,
-    renderSingleHorizontalStaffline: true,
+    //renderSingleHorizontalStaffline: true,  
     });
     osmd
     .load("{{ url_for('static', filename='musicxml/title-song.musicxml') }}")
     .then(
         function() {
+        osmd.zoom = 1;
         osmd.render();
         }
     );

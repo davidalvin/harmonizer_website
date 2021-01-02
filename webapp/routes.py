@@ -52,9 +52,9 @@ def processing():
   sf_path = path.join(app.config["SF_PATH"], 'FluidR3_GM.sf2') # Path to Sound Fount
 
   # Convert Midi to Wav using fluidsynth, which is installed as a separate dependency
-  # process = subprocess.Popen(['fluidsynth', '-F', wav_path, sf_path, midi_path],
-  #                 stdout=subprocess.PIPE, 
-  #                 stderr=subprocess.PIPE)
+  process = subprocess.Popen(['/usr/bin/fluidsynth', '-F', wav_path, sf_path, midi_path],
+                  stdout=subprocess.PIPE, 
+                  stderr=subprocess.PIPE)
 
   # TODO: This currently does not display the downloaded file correctly
 

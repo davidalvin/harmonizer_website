@@ -5,21 +5,21 @@
   <div class="col-md-12">
     <h2>Listen to the results</h2>
     <p>Your masterwork is complete. Download your song by clicking the link below. </p>
-    <form action="{{ url_for('download') }}">
-      <div class="form-group">
-        <button class="btn btn-dark btn-lg btn-block" type="submit">Download</button>
-      </div>
-    </form>
+    <!-- TODO: The file is not properly passed to the webpage at the moment -->
+    <audio class="audio-player" controls preload="none">
+      <source src="{{url_for('get_wav', filename=wav_name)}}" type="audio/wav">
+      Your browser does not support the audio element.
+    </audio>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-12">
-    <!-- TODO: The file is not properly passed to the webpage at the moment -->
-    <audio controls preload="none">
-      <source src="{{url_for('get_wav', filename=wav_name)}}" type="audio/wav">
-      Your browser does not support the audio element.
-    </audio>
+      <form action="{{ url_for('download') }}">
+      <div class="form-group">
+        <button class="btn btn-dark btn-lg btn-block" type="submit">Download</button>
+      </div>
+    </form>
   </div>
 </div>
 
