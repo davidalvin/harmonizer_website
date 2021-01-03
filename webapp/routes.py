@@ -6,9 +6,12 @@ from webapp.harmonizer_model import Generate_SATB_Sequentially
 import secrets
 import subprocess
 
+# TODO: Move these functions inside a class
 def get_song_path(input_file=None, output_path=None, ext=None):
   """
   Returns the path to file with a given extension
+  :input_file: path/to/inputfile
+  :output_path: path/to/outputfolder
   :extension: extension like 'wav', 'mid', 'musicxml'
   """
   
@@ -22,6 +25,7 @@ def convert_midi(input_file=None, output_path=None, output_ext=None):
   """
   Converts a midi file to a given output using musescore3
   :input_file: /path/to/inputfile
+  :output_path: /path/to/outputfolder
   :output_ext: Extension for output file.
     Allowed Extensions: 'mid', 'wav', 'musicxml', 'svg', 'png'
   """
@@ -42,7 +46,6 @@ def convert_midi(input_file=None, output_path=None, output_ext=None):
                   stdout=subprocess.PIPE, 
                   stderr=subprocess.PIPE)
     stdout, stderror = process.communicate()
-
   
   if output_ext in ['svg', 'png']:
     # -T 0: trims excess whitespaces
@@ -52,9 +55,7 @@ def convert_midi(input_file=None, output_path=None, output_ext=None):
     stdout, stderror = process.communicate()
     # Musescore appends "-1" to the end of the file name of svg and png images
     output_file = path.splitext(output_file)[0]+'-1' + path.splitext(output_file)[1]
-  
-  print(stdout)
-  print(stderror)
+
   # Return path/to/outputfile
   return output_file
 
@@ -65,8 +66,7 @@ def convert_midi(input_file=None, output_path=None, output_ext=None):
 def home():
     # Generate a random key
     session["SONG_KEY"] = secrets.token_hex(15) + ".mid"
-    print(f"The root path is {app.root_path}")
-    
+
     return render_template('index.html')
 
 # The route for generating the song
@@ -99,23 +99,12 @@ def processing():
   flash("Harmonization complete", "success")
   session["DOWNLOAD_READY"] = 1
   midi_path = path.join(app.config["OUTPUT_PATH"], session.get("SONG_KEY"))
-  #wav_name = session.get("SONG_KEY")[:-3]+"wav"
-  #wav_path = path.join(app.config["OUTPUT_PATH"],  wav_name) # Path to output wav
-  #sf_path = path.join(app.config["SF_PATH"], 'FluidR3_GM.sf2') # Path to Sound Fount
-
-  # # Convert Midi to Wav using fluidsynth, which is installed as a separate dependency
-  # process = subprocess.Popen(['/usr/bin/fluidsynth', '-F', wav_path, sf_path, midi_path],
-  #                 stdout=subprocess.PIPE, 
-  #                 stderr=subprocess.PIPE)
-  
+   
   wav_path = convert_midi(input_file = midi_path, output_path=app.config["OUTPUT_PATH"], output_ext="wav")
-  svg_path = convert_midi(input_file = midi_path, output_path=app.config["OUTPUT_PATH"], output_ext="svg")
   png_path = convert_midi(input_file = midi_path, output_path=app.config["OUTPUT_PATH"], output_ext="png")
-  musicxml_path = convert_midi(input_file = midi_path, output_path=app.config["OUTPUT_PATH"], output_ext="musicxml")
-  # TODO: This currently does not display the downloaded file correctly
 
   # TODO: Should this be in the if statement?
-  return render_template('listen.html', wav_path=path.split(wav_path)[1], svg_path=path.split(svg_path)[1], png_path=path.split(png_path)[1], musicxml_path=path.split(musicxml_path)[1])
+  return render_template('listen.html', wav_path=path.split(wav_path)[1], png_path=path.split(png_path)[1])
 
 # Page that is displayed after the song is generated
 @app.route("/listen")
@@ -138,23 +127,13 @@ def download():
 def get_output(filename):
   return send_from_directory(path.join(app.root_path, "output"), filename=filename)
 
-
 # Site overloaded
 @app.errorhandler(429)
 def site_overloaded(e):
     # Set the 429 status explicitly
     return render_template('429.html'), 429
 
+# A method used for testing only
 @app.route('/test', methods=["GET","POST"])
 def test():
-  wav_path = convert_midi(input_file = path.join(app.config["OUTPUT_PATH"], "4ffeb3008222d44a7a16abd6190f29.mid") , output_path=app.config["OUTPUT_PATH"], output_ext="wav")
-  print(f'wav path:{wav_path}')
-  svg_path = convert_midi(input_file = path.join(app.config["OUTPUT_PATH"], "4ffeb3008222d44a7a16abd6190f29.mid") , output_path=app.config["OUTPUT_PATH"], output_ext="svg")
-  print(f'svg path:{svg_path}')
-
-  png_path = convert_midi(input_file = path.join(app.config["OUTPUT_PATH"], "4ffeb3008222d44a7a16abd6190f29.mid") , output_path=app.config["OUTPUT_PATH"], output_ext="png")
-  print(f'png path:{png_path}')
-
-  musicxml_path = convert_midi(input_file = path.join(app.config["OUTPUT_PATH"], "4ffeb3008222d44a7a16abd6190f29.mid") , output_path=app.config["OUTPUT_PATH"], output_ext="musicxml")
-  print(f'xml path:{musicxml_path}')
-  return render_template('listen.html', wav_path=path.split(wav_path)[1], svg_path=path.split(svg_path)[1], png_path=path.split(png_path)[1], musicxml_path=path.split(musicxml_path)[1])
+  pass
