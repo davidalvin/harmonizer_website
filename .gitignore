@@ -3,14 +3,20 @@
 # Backup
 *.zip
 
-# Midi
+# Music Files
 *.mid
+*.musicxml
 
 # Wav
 *.wav
 
+# Images
+*.svg
+*.png
+
 # Models
 *.h5
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
