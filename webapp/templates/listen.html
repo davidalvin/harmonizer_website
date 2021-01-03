@@ -3,37 +3,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <h2>Listen to the results</h2>
-    <p>Your masterwork is complete. Download your song by clicking the link below. </p>
-    <!-- TODO: The file is not properly passed to the webpage at the moment -->
-    <audio class="audio-player" controls preload="none">
-      <source src="{{url_for('get_output', filename=wav_path)}}" type="audio/wav">
-      Your browser does not support the audio element.
-    </audio>
-  </div>
-</div>
-
-
-
-<div class="row">
-  <div class="col-md-12">
-    <img src="{{url_for('get_output', filename=png_path)}}" class="img-fluid" alt="Responsive image">
-  </div>
-</div>
-<!-- <div class="col" style="height:50px;"></div>
-<div class="row">
-  <div class="col-md-12">
-    <img src="{{url_for('get_output', filename=svg_path)}}" class="img-fluid m-5" alt="Responsive image">
-  </div>
-</div> -->
-<div class="row">
-  <div class="col md-12">
-      <div id="harmonizedScore"></div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
+      <p>Your masterpiece is complete. Download your song by clicking the link below. </p>
       <form action="{{ url_for('download') }}">
       <div class="form-group">
         <button class="btn btn-dark btn-lg btn-block" type="submit">Download</button>
@@ -41,30 +11,30 @@
     </form>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h4>Listen to the results</h4>
+    <audio class="audio-player" controls preload="none">
+      <source src="{{url_for('get_output', filename=wav_path)}}" type="audio/wav">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <img src="{{url_for('get_output', filename=png_path)}}" class="img-fluid my-3" alt="Responsive image">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+      <a href="/" class="btn btn-dark btn-lg btn-block">Home</a>
+  </div>
+</div>
 {% endblock %}
 
 {% block script %}
-<script>
-  var osmd_harm = new opensheetmusicdisplay.OpenSheetMusicDisplay("harmonizedScore");
-  
-  osmd_harm.setOptions({
-  backend: "svg",
-  drawTitle: false,
-  drawingParameters: "compacttight", // don't display title, composer etc., smaller margins
-  autoResize: true,
-  drawPartNames: false,
-  drawMeasureNumbers: false,
-  //renderSingleHorizontalStaffline: true,  
-  });
-  osmd_harm
-  .load("{{url_for('get_output', filename=musicxml_path)}}")
-  .then(
-      function() {
-      osmd_harm.zoom = 1;
-      osmd_harm.render();
-      }
-  );
-
-  </script>
 
 {% endblock %}
