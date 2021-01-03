@@ -7,7 +7,7 @@
 }
 
 #main-title {
-    font-size:75px !important;
+    font-size:50px !important;
 }
 
 /* Links */
@@ -21,7 +21,6 @@ ul.navbar-nav a{
     color: #000;
     text-decoration:none !important; 
 }
-
 
 
 a:hover {
@@ -43,12 +42,13 @@ a:hover {
 .audio-player {
     margin: 10px auto; 
     display: block;
-    width: 50%;
+    width: 100%;
+    max-width: 500px;
 }
 
 /* Audio Player */
 .title-score {
-    margin: 10px auto; 
-    width: 50%;
+    width: 100%;
+    max-width: 750px;
     display: block;
 }
