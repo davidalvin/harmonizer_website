@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-md-4 my-2">
       <h5><strong>Upload</strong></h5>
-      <p>Upload a monophonic melody (no chords) in C major as a midi file.
+      <p>Upload a monophonic melody (no chords) in C major or A minor as a midi file.
           There are many free midi editors available, like <a href="https://musescore.org/en">MuseScore</a>.</p>
     </div>
     <div class="col-md-4 my-2">
@@ -20,14 +20,12 @@
     </div>
   </div>
 
-    <!-- Break -->
-  <div class="col" style="height:25px;"></div>
-
   <!-- File Browser Uploader -->
-  <div class="row" id="row-upload">
+
+  <div class="row mt-3" id="row-upload">
     <div class="col-md-12">
       <h5><strong>Get Started</strong></h5>
-      <p>Upload your melody as a midi file in C major. It must be monophonic (no chords).</p>
+      <p>Upload your melody as a midi file in C major or A minor. It must be monophonic (no chords).</p>
       <form action = "/processing" method = "POST" enctype = "multipart/form-data">
         <div class="form-group">
           <div class="custom-file">
@@ -36,12 +34,12 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="preloaded-melody">Or use one of these melodies</label>
+          <label for="preloaded-melody">Or use one of these melodies:</label>
           <select name="default-melody" class="form-control" id="preloaded-melody">
             <option selected="selected" value="">Choose a melody...</option>
             <option value="twinkle-twinkle.mid">Twinkle Twinkle</option>
-            <option value="happy-birthday.mid">Happy Birthday</option>
-            <option value="bwv-438.mid">BWV 438</option>
+            <!-- <option value="happy-birthday.mid">Happy Birthday</option>
+            <option value="bwv-438.mid">BWV 438</option> -->
             <option value="sample-melody-1.mid">Sample Melody</option>
             <option value="dummy.mid">Dummy Midi Song (Testing only)</option>
           </select>
