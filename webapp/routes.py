@@ -96,7 +96,7 @@ def processing():
   print(f'input: {input_file}, ouput: {output_file}')      
   Generate_SATB_Sequentially.generate_harmony_from_melody(input_file=input_file, output_file=output_file)
 
-  flash("Harmonization complete", "success")
+  flash("Your masterpiece is complete.", "success")
   session["DOWNLOAD_READY"] = 1
   midi_path = path.join(app.config["OUTPUT_PATH"], session.get("SONG_KEY"))
    
@@ -122,6 +122,11 @@ def download():
     return send_file(path_to_file, as_attachment=True)
   else:
     return render_template('index.html')
+
+# FAQ
+@app.route("/faq")
+def faq():
+    return render_template('faq.html')
 
 @app.route('/cdn/output/<path:filename>', methods=["GET"])
 def get_output(filename):
