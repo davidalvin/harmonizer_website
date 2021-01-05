@@ -3,18 +3,6 @@
 
 <div class="row">
   <div class="col-md-12">
-      <p>Your masterpiece is complete. Download your song by clicking the link below. </p>
-      <form action="{{ url_for('download') }}">
-      <div class="form-group">
-        <button class="btn btn-dark btn-lg btn-block" type="submit">Download</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <h4>Listen to the results</h4>
     <audio class="audio-player" controls preload="none">
       <source src="{{url_for('get_output', filename=wav_path)}}" type="audio/wav">
       Your browser does not support the audio element.
@@ -25,6 +13,16 @@
 <div class="row">
   <div class="col-md-12">
     <img src="{{url_for('get_output', filename=png_path)}}" class="img-fluid my-3" alt="Responsive image">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+      <form action="{{ url_for('download') }}">
+      <div class="form-group">
+        <button class="btn btn-dark btn-lg btn-block" type="submit">Download (As Midi)</button>
+      </div>
+    </form>
   </div>
 </div>
 

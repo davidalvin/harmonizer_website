@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block main %}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="text-center m-2">FAQ</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h5>Where can I find a midi editor?</h5>
+                <p>Download a free midi editor like MuseScore which you can find <a href="https://musescore.org/">here</a>.</p>
+            </li>
+            <div class="list-group-item">
+                <h5>What melodies work the best?</h5>
+                <p>As Prelude49 is in alpha, it is only optimized for certain melodies.</p>
+                <p>Make sure your melody follows these guidelines:</p>
+                <ul>
+                    <li>Tranpose your melody to C Major or A minor</li>
+                    <li>The melody should be nonophonic (no chords)
+                    <li>Use a 4/4 or 2/4 time signature </li>
+                    <li>Do not use note durations shorter than 16th notes (i.e. 32nd, 64th)</li>
+                    <li>Do not use grace notes</li>
+                    <li>Do not use triplets or other tuplets</li>
+                    <li>Do not include a pick-up bar (i.e. do not start the song with a bar that is mainly rests)</li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
