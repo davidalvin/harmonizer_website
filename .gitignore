@@ -31,7 +31,7 @@ instance/
 # Environments
 .env
 env/
-*.yml
+
 
 #Folders
 dist/
