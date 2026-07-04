@@ -1,63 +1,244 @@
-# Harmonizer Website
+# NeuralCounterpoint-Website
 
-A Flask web application that automatically harmonizes a user-provided melody into four-part SATB harmony using a trained TensorFlow/Keras model.
+> **Interactive deep learning web application for AI-assisted classical music harmonization using TensorFlow/Keras, Flask, and symbolic MIDI generation.**
 
 ## Overview
 
-Harmonizer Website lets users upload or select a MIDI melody, processes it through a trained sequential harmony model, and generates a harmonized MIDI output with soprano, alto, tenor, and bass parts.
+NeuralCounterpoint-Website is the deployed inference layer of the broader **NeuralCounterpoint** project: an end-to-end generative AI system for symbolic classical music composition.
 
-The project includes:
+This repository contains a Flask web application that lets users upload or select a MIDI melody, process it through a trained deep learning model, and generate four-part SATB harmony as a downloadable MIDI file.
 
-* A Flask web interface
-* MIDI upload and validation
-* Pretrained TensorFlow/Keras harmony model support
-* MIDI parsing and writing with `music21`
+The system combines:
+
+* Deep learning model inference
+* Symbolic MIDI processing
+* Sequential SATB voice generation
+* Flask-based web deployment
+* Interactive AI-assisted composition
+
+This was built as a from-scratch machine learning engineering project before modern LLM coding assistants were widely available. The model architecture, symbolic music encoding, inference logic, web integration, and deployment workflow were implemented manually.
+
+---
+
+## Project Ecosystem
+
+NeuralCounterpoint is split across multiple public repositories that together demonstrate a full machine learning lifecycle: data preparation, model training, checkpointed experimentation, model inference, and web deployment.
+
+| Repository                                                                             | Role                                                                                                       |
+| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| [NeuralCounterpoint](https://github.com/davidalvin/NeuralCounterpoint)                 | Core training experiment for SATB-style classical harmony generation using encoded symbolic music data.    |
+| [NeuralCounterpoint-Trainer](https://github.com/davidalvin/NeuralCounterpoint-Trainer) | Generalized TensorFlow/Keras training framework for experimenting with polyphonic music generation models. |
+| [NeuralCounterpoint-Website](https://github.com/davidalvin/NeuralCounterpoint-Website) | Flask web application that deploys a trained model for interactive MIDI harmonization.                     |
+
+Together, these repositories form an end-to-end AI music generation pipeline:
+
+```text
+Classical MIDI dataset
+        ↓
+Symbolic music encoding
+        ↓
+Deep learning model training
+        ↓
+Saved TensorFlow/Keras model checkpoint
+        ↓
+Flask web application
+        ↓
+User-uploaded MIDI melody
+        ↓
+AI-generated SATB harmonization
+        ↓
+Downloadable MIDI output
+```
+
+---
+
+## What This Repository Does
+
+This repository turns the trained NeuralCounterpoint model into a usable web application.
+
+A user can:
+
+1. Open the web interface.
+2. Upload a `.mid` melody or select a default melody.
+3. Submit the melody for harmonization.
+4. Run the melody through a trained TensorFlow/Keras model.
+5. Generate bass, alto, and tenor parts around the input soprano melody.
+6. Download the resulting four-part harmonized MIDI file.
+
+The application bridges the gap between model training and real-world interaction by exposing the trained neural network through a simple browser interface.
+
+---
+
+## Deep Learning System
+
+At the core of the app is a trained TensorFlow/Keras model designed for symbolic polyphonic music generation.
+
+The model performs sequential SATB harmonization:
+
+1. **Bass generation**
+   The model predicts a bass line from the input melody and surrounding musical context.
+
+2. **Alto generation**
+   The model predicts alto using the melody and generated bass.
+
+3. **Tenor generation**
+   The model predicts tenor using the melody, generated bass, and generated alto.
+
+This mirrors a structured music-theory workflow while using neural network inference to learn harmonic relationships from data.
+
+The inference pipeline uses:
+
+* Saved TensorFlow/Keras `.h5` model loading
+* Sub-model extraction for bass, alto, and tenor prediction
+* Symbolic MIDI-to-integer encoding
+* One-hot encoded musical context windows
+* Temperature-based probabilistic sampling
+* Sequential autoregressive voice generation
+* MIDI score reconstruction with `music21`
+
+---
+
+## Symbolic Music Representation
+
+Unlike audio generation systems that operate on raw waveforms, NeuralCounterpoint works with symbolic music.
+
+The app converts MIDI melodies into tokenized musical sequences where notes, rests, holds, and end-of-song symbols are represented explicitly.
+
+Example symbolic concepts include:
+
+```text
+Note       → MIDI pitch value
+Rest       → r
+Hold       → _
+End marker → /
+```
+
+This allows the neural network to model musical structure directly, including:
+
+* Melody
+* Harmony
+* Rhythm
+* Voice leading
+* Counterpoint
+* Multi-part SATB relationships
+
+---
+
+## Web Application Flow
+
+```text
+User uploads/selects MIDI
+        ↓
+Flask validates input
+        ↓
+MIDI is parsed with music21
+        ↓
+Melody is encoded into symbolic sequence
+        ↓
+TensorFlow/Keras model generates harmony
+        ↓
+SATB voices are reconstructed
+        ↓
+music21 writes harmonized MIDI output
+        ↓
+User downloads generated file
+```
+
+---
+
+## Features
+
+* Browser-based MIDI harmonization
+* Upload support for `.mid` files
+* Default melody selection
+* Trained TensorFlow/Keras model inference
 * Sequential SATB harmony generation
-* Downloadable harmonized MIDI output
+* Symbolic music processing with `music21`
+* Downloadable generated MIDI output
+* Flask routing and templating
+* Upload validation
+* Session-based randomized output filenames
+* WSGI-ready deployment structure
+
+---
 
 ## Tech Stack
 
-* Python 3.7
+* Python
 * Flask
 * TensorFlow / Keras
 * music21
 * NumPy
-* Flask-Limiter
 * SQLAlchemy
+* Flask-Limiter
+* Jinja2
+* HTML / CSS
+* MIDI file processing
 
-## Project Structure
+---
+
+## Repository Structure
 
 ```text
-harmonizer_website/
+.
 ├── config.py
 ├── run.py
 ├── wsgi.py
 ├── requirements.txt
 ├── requirements-conda.txt
-├── webapp/
-│   ├── __init__.py
-│   ├── routes.py
-│   ├── validator.py
-│   ├── input/
-│   ├── output/
-│   ├── static/
-│   ├── templates/
-│   └── harmonizer_model/
-│       ├── Generate_SATB_Sequentially.py
-│       ├── GlobalConstants.py
-│       ├── HelperFunctions.py
-│       ├── MelodyGenerator.py
-│       ├── mapping/
-│       └── models/
+├── restart.sh
+├── shutdown.sh
+├── cleanup.sh
+└── webapp/
+    ├── __init__.py
+    ├── routes.py
+    ├── validator.py
+    ├── input/
+    ├── output/
+    ├── static/
+    ├── templates/
+    └── harmonizer_model/
+        ├── Generate_SATB_Sequentially.py
+        ├── GlobalConstants.py
+        ├── HelperFunctions.py
+        ├── MelodyGenerator.py
+        ├── mapping/
+        └── models/
 ```
+
+---
+
+## Model Files
+
+The application expects a trained TensorFlow/Keras model in:
+
+```text
+webapp/harmonizer_model/models/
+```
+
+The model path is configured in:
+
+```text
+webapp/harmonizer_model/GlobalConstants.py
+```
+
+The symbolic mappings used for inference are stored in:
+
+```text
+webapp/harmonizer_model/mapping/
+```
+
+These mappings translate between MIDI symbols and model-readable integer encodings.
+
+---
 
 ## Installation
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/davidalvin/harmonizer_website.git
-cd harmonizer_website
+git clone https://github.com/davidalvin/NeuralCounterpoint-Website.git
+cd NeuralCounterpoint-Website
 ```
 
 Create and activate a virtual environment:
@@ -69,7 +250,7 @@ source venv/bin/activate
 
 On Windows:
 
-```bash
+```powershell
 venv\Scripts\activate
 ```
 
@@ -79,14 +260,16 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Alternatively, use the Conda requirements file:
+Alternatively, install from the Conda requirements file:
 
 ```bash
-conda create --name harmonizer --file requirements-conda.txt
-conda activate harmonizer
+conda create --name neuralcounterpoint --file requirements-conda.txt
+conda activate neuralcounterpoint
 ```
 
-## Running the App
+---
+
+## Running Locally
 
 For local development:
 
@@ -108,39 +291,25 @@ Then open:
 http://127.0.0.1:5000
 ```
 
-The repository also includes helper scripts such as `restart.sh`, `shutdown.sh`, and `cleanup.sh`.
+---
 
 ## Usage
 
 1. Open the web application.
-2. Upload a `.mid` file or choose a default melody.
+2. Upload a `.mid` melody or choose a default melody.
 3. Submit the melody for harmonization.
-4. Wait for the model to generate SATB harmony.
-5. Download the resulting MIDI file.
+4. Wait for the model to generate the missing voices.
+5. Download the generated SATB MIDI file.
 
-## Model
-
-The harmonizer uses a pretrained TensorFlow/Keras model stored in:
-
-```text
-webapp/harmonizer_model/models/
-```
-
-The model generates harmony sequentially:
-
-1. Bass is predicted first.
-2. Alto is predicted using the melody and predicted bass.
-3. Tenor is predicted using the melody, bass, and alto.
-
-Mappings for MIDI symbols and keys are stored in:
-
-```text
-webapp/harmonizer_model/mapping/
-```
+---
 
 ## Configuration
 
-Main configuration is handled in `config.py`.
+Main application settings are defined in:
+
+```text
+config.py
+```
 
 Important settings include:
 
@@ -152,11 +321,13 @@ OUTPUT_PATH = 'webapp/output'
 DEFAULT_MELODY_DIR = 'default'
 ```
 
-Only `.mid` files are accepted by default.
+By default, the app accepts `.mid` files.
+
+---
 
 ## Deployment
 
-For production deployment, the project includes `wsgi.py` for running the Flask app with a WSGI server.
+The project includes `wsgi.py` for production deployment with a WSGI server.
 
 Example:
 
@@ -164,23 +335,58 @@ Example:
 uwsgi --ini harmonizer.ini
 ```
 
-You may also use the included shell scripts after setting the correct environment variables.
+The repository also includes helper scripts for server management:
 
-## Notes
+```text
+restart.sh
+shutdown.sh
+cleanup.sh
+```
 
-* Uploaded MIDI files are saved temporarily in `webapp/input`.
-* Generated harmonized MIDI files are written to `webapp/output`.
-* The app uses a secret session key to create randomized file names.
-* WAV conversion support appears to be planned through FluidSynth, but the conversion code is currently commented out.
+---
 
-## License
+## Why This Project Matters
 
-No license is currently specified in the repository. Add one before distributing or reusing this project publicly.
+NeuralCounterpoint-Website demonstrates more than a standalone web app. It shows an end-to-end machine learning system that connects:
+
+* A trained neural network
+* Custom symbolic data encoding
+* Deep learning inference
+* Music theory-inspired generation logic
+* Backend web development
+* File validation and user interaction
+* Generated media output
+
+For a machine learning portfolio, this project highlights the full path from model experimentation to an interactive deployed application.
+
+---
+
+## Applications
+
+This project demonstrates techniques relevant to:
+
+* Generative AI
+* Deep learning model deployment
+* AI-assisted music composition
+* Symbolic music generation
+* Sequence modeling
+* Recurrent neural networks
+* Computational musicology
+* Flask web development
+* End-to-end machine learning systems
+* Creative AI applications
+
+
+---
+
+## Historical Note
+
+This project was originally built before the rise of modern AI coding assistants. The deep learning architecture, symbolic encoding system, SATB generation pipeline, Flask application, and deployment logic were implemented manually.
+
+---
 
 ## Author
 
-Created by [davidalvin](https://github.com/davidalvin).
+**David Alvin**
 
-
-	
-
+Machine Learning • Deep Learning • Generative AI • Music AI • Full-Stack ML Applications
